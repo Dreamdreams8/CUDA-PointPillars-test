@@ -58,8 +58,8 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -g -G --ptxas-options=-v)
 endif()
 
-set(TENSORRT_INCLUDE_DIRS /usr/include/aarch64-linux-gnu/)
-set(TENSORRT_LIBRARY_DIRS /usr/lib/aarch64-linux-gnu/)
+set(TENSORRT_INCLUDE_DIRS /home/dell2/soft/TensorRT-8.4.0.6/include)
+set(TENSORRT_LIBRARY_DIRS /home/dell2/soft/TensorRT-8.4.0.6/lib)
 
 include_directories(
     ${CUDA_INCLUDE_DIRS}
@@ -81,8 +81,8 @@ file(GLOB_RECURSE SOURCE_FILES
     src/*.cpp
 )
 
-#cuda_add_executable(${PROJECT_NAME} main.cpp ${SOURCE_FILES})
-CUDA_ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+cuda_add_executable(${PROJECT_NAME} main.cpp ${SOURCE_FILES})
+#CUDA_ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 #ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME}
     libnvinfer.so

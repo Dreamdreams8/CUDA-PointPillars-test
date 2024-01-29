@@ -20,19 +20,19 @@ const int MAX_VOXELS = 40000;
 class Params
 {
   public:
-    static const int num_classes = 2;
-    const char *class_name [num_classes] = { "Car","Truck",};
-    const float min_x_range = -69.12;
+    static const int num_classes = 3;
+    const char *class_name [num_classes] = { "Car","Pedestrian","Cyclist",};
+    const float min_x_range = 0.0;
     const float max_x_range = 69.12;
     const float min_y_range = -39.68;
     const float max_y_range = 39.68;
-    const float min_z_range = 0.0;
-    const float max_z_range = 4.0;
+    const float min_z_range = -3.0;
+    const float max_z_range = 1.0;
     // the size of a pillar
     const float pillar_x_size = 0.16;
     const float pillar_y_size = 0.16;
     const float pillar_z_size = 4.0;
-    const int max_num_points_per_pillar = 96;
+    const int max_num_points_per_pillar = 32;
     const int num_point_values = 4;
     // the number of feature maps for pillar scatter
     const int num_feature_scatter = 64;
@@ -44,12 +44,14 @@ class Params
     static const int num_anchors = num_classes * 2;
     static const int len_per_anchor = 4;
     const float anchors[num_anchors * len_per_anchor] = {
-      3.9,2.04,1.61,0.0,
-      3.9,2.04,1.61,1.57,
-      15.0,2.86,3.08,0.0,
-      15.0,2.86,3.08,1.57,
+      3.9,1.6,1.56,0.0,
+      3.9,1.6,1.56,1.57,
+      0.8,0.6,1.73,0.0,
+      0.8,0.6,1.73,1.57,
+      1.76,0.6,1.73,0.0,
+      1.76,0.6,1.73,1.57,
       };
-    const float anchor_bottom_heights[num_classes] = {-0.5,-0.5,};
+    const float anchor_bottom_heights[num_classes] = {-1.78,-0.6,-0.6,};
     // the score threshold for classification
     const float score_thresh = 0.1;
     const float nms_thresh = 0.01;
