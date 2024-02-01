@@ -73,7 +73,7 @@ def simplify_preprocess(onnx_model, VOXEL_SIZE_X, VOXEL_SIZE_Y, MAX_POINTS_PER_V
   tmap = graph.tensors()
   MAX_VOXELS = tmap["voxels"].shape[0]
 
-  VOXEL_ARRAY = np.array([int(VOXEL_SIZE_X),int(VOXEL_SIZE_Y)])
+  VOXEL_ARRAY = np.array([int(VOXEL_SIZE_Y),int(VOXEL_SIZE_X)])
 
   # voxels: [V, P, C']
   # V is the maximum number of voxels per frame

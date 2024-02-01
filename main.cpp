@@ -24,6 +24,13 @@
 #include "./params.h"
 #include "./pointpillar.h"
 
+#include <iostream>
+#include <sys/types.h>
+#include <dirent.h>
+#include <vector>
+#include <string.h>
+using namespace std;
+
 #define checkCudaErrors(status)                                   \
 {                                                                 \
   if (status != 0)                                                \
@@ -123,6 +130,21 @@ void SaveBoxPred(std::vector<Bndbox> boxes, std::string file_name)
     return;
 };
 
+
+void GetFileNames(string path,vector<string>& filepath,vector<string>& filenames)
+{
+    DIR *pDir;
+    struct dirent* ptr;
+    if(!(pDir = opendir(path.c_str())))
+        return;
+    while((ptr = readdir(pDir))!=0) {
+        if (strcmp(ptr->d_name, ".") != 0 && strcmp(ptr->d_name, "..") != 0)
+            filepath.push_back(path + "/" + ptr->d_name);
+            filenames.push_back(ptr->d_name);
+    }
+    closedir(pDir);
+}
+
 int main(int argc, const char **argv)
 {
   Getinfo();
@@ -141,20 +163,15 @@ int main(int argc, const char **argv)
   nms_pred.reserve(100);
 
   PointPillar pointpillar(Model_File, stream);
+  vector<string> file_path;
+  vector<string> file_name;
+  string path = "../data";
 
-  for (int i = 0; i < 10; i++)
+  GetFileNames(path, file_path,file_name);
+
+  for (uint i = 0; i <file_path.size(); i++)
   {
-    std::string dataFile = Data_File;
-
-    std::stringstream ss;
-
-    ss<< i;
-
-    int n_zero = 6;
-    std::string _str = ss.str();
-    std::string index_str = std::string(n_zero - _str.length(), '0') + _str;
-    dataFile += index_str;
-    dataFile +=".bin";
+    std::string dataFile = file_path[i];
 
     std::cout << "<<<<<<<<<<<" <<std::endl;
     std::cout << "load file: "<< dataFile <<std::endl;
@@ -188,7 +205,7 @@ int main(int argc, const char **argv)
     checkCudaErrors(cudaFree(points_data));
 
     std::cout<<"Bndbox objs: "<< nms_pred.size()<<std::endl;
-    std::string save_file_name = Save_Dir + index_str + ".txt";
+    std::string save_file_name = Save_Dir + file_name[i].substr(0,file_name[i].length()-4) + ".txt";
     SaveBoxPred(nms_pred, save_file_name);
 
     nms_pred.clear();
@@ -202,3 +219,4 @@ int main(int argc, const char **argv)
 
   return 0;
 }
+
